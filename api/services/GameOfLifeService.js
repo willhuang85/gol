@@ -6,7 +6,7 @@ module.exports = {
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < columns; j++) {
                 if (isAlive(i, j, currentGeneration)) {
-                    nextGeneration.push([i,j]);
+                    nextGeneration.push([j,i]);
                 }
             }
         }
@@ -14,7 +14,7 @@ module.exports = {
     }
 };
 
-var isAlive = function(column, row, currentGeneration) {
+var isAlive = function(row, column, currentGeneration) {
     var count = getNeighborCount(column, row, currentGeneration);
     if (count == 3) {
         return true;

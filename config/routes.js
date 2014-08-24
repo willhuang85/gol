@@ -36,7 +36,9 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'get /nextGeneration': 'GameOfLifeController.nextGeneration'
+  'get /nextGeneration': 'GameOfLifeController.nextGeneration',
+
+  'get /nextGeneration2': 'GameOfLifeController.nextGeneration2'
 
   /***************************************************************************
   *                                                                          *

@@ -17,7 +17,7 @@ module.exports = {
         cell.neighbors = neighbors;
     },
 
-    checkNeighborsForAliveness: function(neighbors, liveCells) {
+    getNeighborsForNeighbors: function(neighbors, liveCells) {
         for (var i = 0; i < neighbors.length; i++) {
             var cell = neighbors[i];
             this.getNeighborsForCell(cell, liveCells);

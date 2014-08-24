@@ -40,7 +40,7 @@ module.exports = {
         for (var i = 0; i < lcells.length; i++) {
             var cell = lcells[i];
             GameOfLife2Service.getNeighborsForCell(cell, lcells);
-            GameOfLife2Service.checkNeighborsForAliveness(cell.neighbors, lcells2);
+            GameOfLife2Service.getNeighborsForNeighbors(cell.neighbors, lcells2);
         }
 
         var next = [];

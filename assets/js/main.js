@@ -16,7 +16,7 @@ jQuery(function($){
 		};
 
 		$.ajax({
-			url: '/nextGeneration2',
+			url: '/nextGeneration',
 			jsonp: 'callback',
 			dataType: 'jsonp',
 			data: data,

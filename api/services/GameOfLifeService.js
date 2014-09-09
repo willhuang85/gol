@@ -1,61 +1,94 @@
-
+var _ = require('lodash');
 module.exports = {
 
     getNextGeneration: function(currentGeneration, columns, rows) {
-        var nextGeneration = [];
-        for (var i = 0; i < rows; i++) {
-            for (var j = 0; j < columns; j++) {
-                if (isAlive(i, j, currentGeneration)) {
-                    nextGeneration.push([j,i]);
-                }
+        var next = [];
+        var liveCells = currentGeneration.map(function(arr) {
+            return arr.slice();
+        });
+        currentGeneration.forEach(function(cell){
+            cell.alive = true;
+            getNeighborsForCell(cell, false, liveCells, columns, rows);
+            cell.neighbors.forEach(function(neighbor) {
+                populateNext(neighbor, next);
+
+            });
+            populateNext(cell, next);
+        });
+        return next;
+
+    }
+};
+
+var populateNext = function(cell, next) {
+    if (cell.numOfAliveNeighbors == 3) {
+        if (_.find(next, cell) == undefined) {
+            next.push(cell);
+        }
+    } else if (cell.numOfAliveNeighbors == 4) {
+        if (cell.alive) {
+            if (_.find(next, cell) == undefined) {
+                next.push(cell);
             }
         }
-        return nextGeneration;
     }
 };
 
-var isAlive = function(row, column, currentGeneration) {
-    var count = getNeighborCount(column, row, currentGeneration);
-    if (count == 3) {
-        return true;
-    } else if (count == 4) {
-        if (currentGeneration[row][column] == 0) {
-            return false;
-        } else {
-            return true;
+var getNeighborsForCell = function(cell, stop, liveCells, c, r) {
+    var x = cell[0];
+    var y = cell[1];
+    cell.neighbors = [];
+    if (x-1 >= 0 && x-1 < c && y-1 >=0 && y-1 < r)
+        addToNeighbors(cell.neighbors, [x-1,y-1], liveCells);
+
+    if (x >= 0 && x < c && y-1 >=0 && y-1 < r)
+        addToNeighbors(cell.neighbors, [x,y-1], liveCells);
+
+    if (x+1 >= 0 && x+1 < c && y-1 >=0 && y-1 < r)
+        addToNeighbors(cell.neighbors, [x+1,y-1], liveCells);
+
+    if (x-1 >= 0 && x-1 < c && y >=0 && y < r)
+        addToNeighbors(cell.neighbors, [x-1,y], liveCells);
+
+    if (x+1 >= 0 && x+1 < c && y >=0 && y < r)
+        addToNeighbors(cell.neighbors, [x+1,y], liveCells);
+
+    if (x-1 >= 0 && x-1 < c && y+1 >=0 && y+1 < r)
+        addToNeighbors(cell.neighbors, [x-1,y+1], liveCells);
+
+    if (x >= 0 && x < c && y+1 >=0 && y+1 < r)
+        addToNeighbors(cell.neighbors, [x,y+1], liveCells);
+
+    if (x+1 >= 0 && x+1 < c && y+1 >=0 && y+1 < r)
+        addToNeighbors(cell.neighbors, [x+1,y+1], liveCells);
+
+    var count = 0;
+    cell.neighbors.forEach(function(neighbor){
+       if (neighbor.alive)
+            count++;
+    });
+    if (cell.alive) {
+        count++;
+    }
+    cell.numOfAliveNeighbors = count;
+
+    if (stop != true) {
+        getNeighborsForCell(cell.neighbors[0], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[1], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[2], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[3], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[4], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[5], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[6], true, liveCells, c, r);
+        getNeighborsForCell(cell.neighbors[7], true, liveCells, c, r);
+    }
+};
+
+var addToNeighbors = function(neighbors, cell, liveCells) {
+    liveCells.forEach(function(lcell) {
+        if (cell[0] == lcell[0] && cell[1] == lcell[1]) {
+            cell.alive = true;
         }
-    } else {
-        return false;
-    }
-};
-
-var getNeighborCount = function(column, row, currentGeneration) {
-    var count = 0;
-    var line;
-    if (row-1 >= 0) {
-        line = currentGeneration[row-1];
-        count+= countNeighborsInRow(column, line);
-    }
-
-    line = currentGeneration[row];
-    count+= countNeighborsInRow(column, line);
-
-    if (row+1 < currentGeneration.length) {
-        line = currentGeneration[row+1];
-        count+= countNeighborsInRow(column, line);
-    }
-    return count;
-
-};
-
-var countNeighborsInRow = function(column, line) {
-    var count = 0;
-    if (column-1 >= 0) {
-        count += line[column-1];
-    }
-    count += line[column];
-    if (column+1 < line.length) {
-        count+= line[column+1];
-    }
-    return count;
+    });
+    neighbors.push(cell);
 };

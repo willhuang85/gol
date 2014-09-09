@@ -1,14 +1,12 @@
 jQuery(function($){
 
 	$('#getNext').click(function(){
-//		var liveCells = [[2,1],[2,2],[2,3]];
-
         var input = $('#myInput').val();
         var M = $('#M').val();
         var N = $('#N').val();
         if (!input || !M || !N)
             return;
-        var liveCells = $.parseJSON($('#myInput').val());
+        var liveCells = $.parseJSON(input);
 		var data = {
 			'M': M,
 			'N': N,
@@ -27,9 +25,7 @@ jQuery(function($){
                 $('#response').text(JSON.parse(x.responseText).error);
             }
 		});
-
 	});
-
 
 
 

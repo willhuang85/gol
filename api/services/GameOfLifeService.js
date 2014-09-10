@@ -73,14 +73,9 @@ var getNeighborsForCell = function(cell, stop, liveCells, c, r) {
     cell.numOfAliveNeighbors = count;
 
     if (stop != true) {
-        getNeighborsForCell(cell.neighbors[0], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[1], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[2], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[3], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[4], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[5], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[6], true, liveCells, c, r);
-        getNeighborsForCell(cell.neighbors[7], true, liveCells, c, r);
+        cell.neighbors.forEach(function(neighbor) {
+            getNeighborsForCell(neighbor, true, liveCells, c, r);
+        });
     }
 };
 
